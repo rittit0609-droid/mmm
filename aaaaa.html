@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Love Proposal</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb);
+    }
+
+    /* Floating Hearts Animation */
+    .heart {
+      position: absolute;
+      bottom: -20px;
+      color: #ff4d6d;
+      font-size: 24px;
+      animation: floatUp 6s linear infinite;
+      opacity: 0.7;
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-110vh) scale(1.5); opacity: 0; }
+    }
+
+    .box {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 40px;
+      border-radius: 25px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+      text-align: center;
+      animation: fadeIn 1.5s ease;
+      position: relative;
+    }
+
+    @keyframes fadeIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    h2 {
+      color: #ff4d6d;
+      font-size: 26px;
+      margin-bottom: 20px;
+      animation: bounce 1s infinite alternate;
+    }
+
+    @keyframes bounce {
+      from { transform: translateY(0); }
+      to { transform: translateY(-10px); }
+    }
+
+    button {
+      padding: 12px 25px;
+      margin: 10px;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: bold;
+      transition: 0.3s;
+      position: relative;
+    }
+
+    .yes {
+      background: #4caf50;
+      color: white;
+      box-shadow: 0 0 10px #4caf50;
+    }
+
+    .no {
+      background: #ff4d6d;
+      color: white;
+      box-shadow: 0 0 10px #ff4d6d;
+      position: relative;
+      transition: transform 0.3s ease;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2 id="question">Hey babe, main tera... sunn, kuch poochna tha tujhse 💕</h2>
+    <button id="startBtn" class="yes" onclick="startQuestions()">Ok 💖</button>
+    <div id="options" style="display:none;">
+      <button class="yes" onclick="yesAnswer()">Yes</button>
+      <button class="no" id="noBtn" onclick="noAnswer()">No</button>
+    </div>
+  </div>
+
+  <script>
+    let step = 0;
+    const question = document.getElementById("question");
+    const noBtn = document.getElementById("noBtn");
+    const options = document.getElementById("options");
+    const startBtn = document.getElementById("startBtn");
+
+    function startQuestions() {
+      question.innerHTML = "Do you love me? ❤️";
+      startBtn.style.display = "none";
+      options.style.display = "block";
+    }
+
+    function yesAnswer() {
+      question.innerHTML = "Yayyy! I love you too 😘❤️";
+      document.querySelectorAll("#options button").forEach(btn => btn.style.display = "none");
+
+      // Burst of hearts
+      for(let i=0; i<15; i++) {
+        setTimeout(createHeart, i*200);
+      }
+    }
+
+    function noAnswer() {
+      step++;
+      if(step === 1) {
+        question.innerHTML = "Are you sure? 😢";
+      } else if(step === 2) {
+        question.innerHTML = "Plz think again 🥺";
+      } else if(step === 3) {
+        question.innerHTML = "Baby maan jao na, kitna bhaav khaogi 🥺❤️";
+        noBtn.removeAttribute("onclick");
+        noBtn.addEventListener("mouseover", moveNoButton);
+      } else {
+        question.innerHTML = "Fine... but I'll always love you 💔";
+        document.querySelectorAll("#options button").forEach(btn => btn.style.display = "none");
+      }
+    }
+
+    function moveNoButton() {
+      const x = Math.random() * 200 - 100;
+      const y = Math.random() * 200 - 100;
+      noBtn.style.transform = `translate(${x}px, ${y}px)`;
+    }
+
+    // Floating Hearts
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.innerHTML = "❤️";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = (20 + Math.random() * 30) + "px";
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 6000);
+    }
+
+    setInterval(createHeart, 800);
+  </script>
+</body>
+</html>
